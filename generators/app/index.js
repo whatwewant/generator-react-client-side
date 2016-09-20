@@ -108,7 +108,7 @@ module.exports = yeoman.Base.extend({
 
     // 3 .gitignore
     this.fs.copy(
-      this.templatePath('.gitignore'),
+      this.templatePath('gitignore'),
       this.destinationPath('.gitignore')
     );
 
