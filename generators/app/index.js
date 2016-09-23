@@ -11,11 +11,16 @@ const mkdirp = require('mkdirp');
 const USERNAME = os.userInfo().username
 
 module.exports = yeoman.Base.extend({
+
   initializing () {
     this.props = {};
+    this.options.update = this.options.update || this.options.U;
   },
 
   prompting () {
+    // ugly update option
+    if (this.options.update) return;
+
     this.log(yosay(
       'Welcome to the mathematical ' + chalk.red('generator-react-client-side') + ' generator!'
     ));
@@ -24,6 +29,7 @@ module.exports = yeoman.Base.extend({
       type: 'input',
       name: 'projectName',
       message: 'Input Project Name:',
+      default: this.appname
     }, {
       type: 'input',
       name: 'projectDesc',
@@ -52,6 +58,9 @@ module.exports = yeoman.Base.extend({
   },
 
   defaults () {
+    // ugly update option
+    if (this.options.update) return;
+
     if (path.basename(this.destinationPath()) !== this.props.projectName) {
       this.log(
         `You generator must be inside a folder named ${this.props.projectName} I will automatically create this folder.`
@@ -62,7 +71,36 @@ module.exports = yeoman.Base.extend({
     this.destinationRoot(this.destinationPath(this.props.projectName));
   },
 
+  update () {
+    console.log('Updating Project Config from Generator ...');
+
+    // 1 package.json
+    const oldPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
+    const defaultPkg = this.fs.readJSON(this.templatePath('package.json'), {});
+    const pkg = extend(
+      {},
+      defaultPkg,
+      oldPkg
+    );
+    this.fs.writeJSON(this.destinationPath('package.json'), pkg);
+
+    // 2 webpack config
+    this.fs.copy(
+      this.templatePath('webpack.config.js'),
+      this.destinationPath('webpack.config.js')
+    );
+
+    // 3 .gitignore
+    this.fs.copy(
+      this.templatePath('gitignore'),
+      this.destinationPath('.gitignore')
+    );
+  },
+
   writing () {
+    // ugly update option
+    if (this.options.update) return;
+
     // File Tree
     //    .
     //    ├── package.json

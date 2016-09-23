@@ -30,6 +30,7 @@ npm build
 
 ## History
 * 2016-09-23
+  * add command to update config: `cd /path/to/YOUR_PROJECT; yo react-client-side --update`
   * update wepack config
     * + `alias`
     * + `#inline-source-map` # js debug
