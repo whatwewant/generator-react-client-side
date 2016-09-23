@@ -14,6 +14,7 @@ var precss = require('precss');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
+var ip = require('ip');
 
 module.exports = {
   entry: [
@@ -96,7 +97,7 @@ module.exports = {
       template: path.join(__dirname, 'src/index.html'),
       chunkSortMode: 'none'
     }),
-    new OpenBrowserPlugin({ url: 'http://localhost:8080' })
+    new OpenBrowserPlugin({ url: `http://${ip.address()}:8080` })
   ],
   devtool: process.env.NODE_ENV === 'production' ? '' : '#inline-source-map'
 };
