@@ -6,9 +6,11 @@
 */
 
 
+var path = require('path');
 
 var webpack = require('webpack');
-var path = require('path');
+var autoprefixer = require('autoprefixer');
+var precss = require('precss');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
@@ -46,7 +48,7 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         loader: 'babel',
         query: {
@@ -56,24 +58,45 @@ module.exports = {
         test: /\.scss$/,
         loader: 'style!css!postcss!sass'
       }, {
+        test: /\.less$/,
+        loader: 'style!css!postcss!less'
+      }, {
         test: /\.css$/,
         loader: 'style!css!postcss'
-      },{
-        test: /\.(png|jpg)$/,
-        loader: 'url?limit=25000'
+      }, {
+        test: /\.json$/,
+        loader: 'json'
+      }, {
+        test: /\.(png|jpg|gif|svg)$/,
+        loader: 'url?limit=25000&name=[name].[ext]?[hash]'
+      }, {
+        test: /\.(eot|woff|ttf|svg)$/,
+        loader: 'url?limit=30000&name=[name]-[hash].[ext]'
       }
     ],
+  },
+  postcss: function () {
+    return [ autoprefixer, precss ];
   },
   plugins: process.env.NODE_ENV === 'production' ? [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new ExtractTextPlugin('[name].[contenthash].css'),
   ] : [
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
+    new ExtractTextPlugin('[name].css'),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src/index.html'),
       chunkSortMode: 'none'
     }),
     new OpenBrowserPlugin({ url: 'http://localhost:8080' })
   ],
-  devtool: '#inline-source-map'
+  devtool: process.env.NODE_ENV === 'production' ? '' : '#inline-source-map'
 };
