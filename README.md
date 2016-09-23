@@ -16,6 +16,12 @@ Then generate your new project:
 yo react-client-side
 ```
 
+## History
+* 2016-09-23
+  * update wepack config
+    * + `alias`
+    * + `#inline-source-map` # js debug
+
 ## License
 
 MIT © [Eason Smith](http://colesmith.space)

@@ -24,6 +24,24 @@ module.exports = {
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
+    alias: {
+      // ================
+      // 自定义路径名
+      // ================
+      CONTAINERS: path.join('src', 'containers'),
+      COMPONENTS: path.join('src', 'components'),
+      ACTIONS: path.join('src', 'actions'),
+      REDUCERS: path.join('src', 'reducers'),
+      STORE: path.join('src', 'store'),
+      CONFIG: path.join('src', 'conf'),
+      //
+      ROUTES: path.join('src', 'routes'),
+      SERVICES: path.join('src', 'services'),
+      UTILS: path.join('src', 'utils'),
+      HOC: path.join('src', 'utils/HoC'),
+      MIXIN: path.join('src', 'utils/mixins'),
+      VIEWS: path.join('src', 'views'),
+    },
   },
   module: {
     loaders: [
@@ -52,8 +70,10 @@ module.exports = {
     new webpack.optimize.UglifyJsPlugin()
   ] : [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src/index.html')
+      template: path.join(__dirname, 'src/index.html'),
+      chunkSortMode: 'none'
     }),
     new OpenBrowserPlugin({ url: 'http://localhost:8080' })
   ],
+  devtool: '#inline-source-map'
 };
