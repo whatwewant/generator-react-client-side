@@ -16,6 +16,18 @@ Then generate your new project:
 yo react-client-side
 ```
 
+Then run your new project on develop mode
+
+```bash
+npm start
+```
+
+Or run your project on production mode
+
+```bash
+npm build
+```
+
 ## History
 * 2016-09-23
   * update wepack config
