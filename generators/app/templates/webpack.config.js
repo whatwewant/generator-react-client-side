@@ -15,9 +15,24 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 var ip = require('ip');
+var SftpWebpackPlugin = require('sftp-webpack-plugin');
+
+var src = path.resolve(__dirname, './src');
+var SFTP_CONFIG = {
+  on: process.env.SFTP || false, // default false
+  conf: {
+    host: 'example.com',
+    port: '22', // default
+    username: 'username',
+    password: 'password',
+    from: '/path/to/localDistPath',
+    to: '/path/to/serverPath',
+  }
+};
 
 module.exports = {
   entry: [
+    'babel-polyfill',
     path.join(__dirname, './src/app.js')
   ],
   output: {
@@ -31,19 +46,19 @@ module.exports = {
       // ================
       // 自定义路径名
       // ================
-      CONTAINERS: path.join('src', 'containers'),
-      COMPONENTS: path.join('src', 'components'),
-      ACTIONS: path.join('src', 'actions'),
-      REDUCERS: path.join('src', 'reducers'),
-      STORE: path.join('src', 'store'),
-      CONFIG: path.join('src', 'conf'),
+      CONTAINERS: path.join(src, 'containers'),
+      COMPONENTS: path.join(src, 'components'),
+      ACTIONS: path.join(src, 'actions'),
+      REDUCERS: path.join(src, 'reducers'),
+      STORE: path.join(src, 'store'),
+      CONFIG: path.join(src, 'conf'),
       //
-      ROUTES: path.join('src', 'routes'),
-      SERVICES: path.join('src', 'services'),
-      UTILS: path.join('src', 'utils'),
-      HOC: path.join('src', 'utils/HoC'),
-      MIXIN: path.join('src', 'utils/mixins'),
-      VIEWS: path.join('src', 'views'),
+      ROUTES: path.join(src, 'routes'),
+      SERVICES: path.join(src, 'services'),
+      UTILS: path.join(src, 'utils'),
+      HOC: path.join(src, 'utils/HoC'),
+      MIXIN: path.join(src, 'utils/mixins'),
+      VIEWS: path.join(src, 'views'),
     },
   },
   module: {
@@ -79,7 +94,17 @@ module.exports = {
   postcss: function () {
     return [ autoprefixer, precss ];
   },
-  plugins: process.env.NODE_ENV === 'production' ? [
+  plugins: process.env.NODE_ENV === 'production' ? SFTP_CONFIG.on ? [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new ExtractTextPlugin('[name].[contenthash].css'),
+    new SftpWebpackPlugin(SFTP_CONFIG.conf)
+  ] : [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
