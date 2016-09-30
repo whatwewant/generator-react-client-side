@@ -84,10 +84,10 @@ module.exports = {
         loader: 'json'
       }, {
         test: /\.(png|jpg|gif|svg)$/,
-        loader: 'url?limit=25000&name=[name].[ext]?[hash]'
+        loader: 'url?limit=25000&name=[path][name].[ext]?[hash]'
       }, {
         test: /\.(eot|woff|ttf|svg)$/,
-        loader: 'url?limit=30000&name=[name]-[hash].[ext]'
+        loader: 'url?limit=30000&name=[path][name]-[hash].[ext]'
       }
     ],
   },
