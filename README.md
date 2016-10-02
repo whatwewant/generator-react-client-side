@@ -29,6 +29,13 @@ npm build
 ```
 
 ## History
+* 2016-10-02
+  * +fix bug: add `file-loader` package
+  * +update: build assets file path correct, like src/img/* => dist dist/img
+  * +update: add html-webpack-plugin for production mode, like copy index.html -> dist
+  * +fix bug: 
+    * Problem: `Couldn't find preset "stage-0" relative to directory`
+    * Solution: `http://stackoverflow.com/questions/34574403/how-to-set-resolve-for-babel-loader-presets`
 * 2016-09-27
   * fix bug: babel-polyfill
   * support: sftp-webpack-plugin 
