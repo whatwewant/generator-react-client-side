@@ -40,6 +40,10 @@ module.exports = {
     filename: './bundle.js',
     publicPath: '/'
   },
+  // resolveLoader: {
+    // root: [ path.join(__dirname, 'node_modules') ] // for some packages will use local node_modules,
+    // modulesDirectories: [ path.join(__dirname, 'node_modules') ] // for some packages will use local node_modules,
+  // },
   resolve: {
     extensions: ['', '.js', '.jsx'],
     alias: {
@@ -68,7 +72,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel',
         query: {
-          presets: ['es2015', 'stage-0', 'stage-2', 'react']
+          presets: ['es2015', 'stage-0', 'stage-2', 'react'].map(e => 'babel-preset-'+e).map(require.resolve)
         }
       }, {
         test: /\.scss$/,
@@ -103,6 +107,10 @@ module.exports = {
       }
     }),
     new ExtractTextPlugin('[name].[contenthash].css'),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'src/index.html'),
+      chunkSortMode: 'none'
+    }),
     new SftpWebpackPlugin(SFTP_CONFIG.conf)
   ] : [
     new webpack.optimize.DedupePlugin(),
@@ -113,6 +121,10 @@ module.exports = {
       }
     }),
     new ExtractTextPlugin('[name].[contenthash].css'),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'src/index.html'),
+      chunkSortMode: 'none'
+    }),
   ] : [
     new webpack.optimize.OccurrenceOrderPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
