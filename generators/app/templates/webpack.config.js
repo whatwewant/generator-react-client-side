@@ -33,19 +33,19 @@ var SFTP_CONFIG = {
 module.exports = {
   entry: [
     'babel-polyfill',
-    path.join(__dirname, './src/app.js')
+    path.join(src, 'app.js')
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: './bundle.js',
     publicPath: '/'
   },
-  // resolveLoader: {
-    // root: [ path.join(__dirname, 'node_modules') ] // for some packages will use local node_modules,
+  resolveLoader: {
+    root: path.join(__dirname, 'node_modules') // @TODO Doesnot work, for some packages will use local node_modules,
     // modulesDirectories: [ path.join(__dirname, 'node_modules') ] // for some packages will use local node_modules,
-  // },
+  },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.jsx', '.json'],
     alias: {
       // ================
       // 自定义路径名
@@ -72,7 +72,16 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel',
         query: {
-          presets: ['es2015', 'stage-0', 'stage-2', 'react'].map(e => 'babel-preset-'+e).map(require.resolve)
+          plugins: [
+            'transform-runtime',
+            'transform-decorators-legacy'
+          ],
+          presets: [
+            'es2015',
+            'react',
+            'stage-0',
+            'stage-2'
+          ].map(e => 'babel-preset-'+e).map(require.resolve)
         }
       }, {
         test: /\.scss$/,
