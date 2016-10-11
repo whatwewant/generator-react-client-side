@@ -14,6 +14,7 @@ var precss = require('precss');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
+var px2rem = require('postcss-plugin-px2rem');
 var ip = require('ip');
 var SftpWebpackPlugin = require('sftp-webpack-plugin');
 
@@ -28,6 +29,18 @@ var SFTP_CONFIG = {
     from: '/path/to/localDistPath',
     to: '/path/to/serverPath',
   }
+};
+
+var PX2REM_OPTIONS = {
+  rootValue: 16,
+  unitPrecision: 5,
+  propWhiteList: [],
+  propBlackList: [],
+  selectorBlackList: [],
+  ignoreIdentifier: false,
+  replace: true,
+  mediaQuery: false,
+  minPixelValue: 0,
 };
 
 module.exports = {
@@ -105,7 +118,7 @@ module.exports = {
     ],
   },
   postcss: function () {
-    return [ autoprefixer, precss ];
+    return [ autoprefixer, precss, px2rem(PX2REM_OPTIONS) ];
   },
   plugins: process.env.NODE_ENV === 'production' ? SFTP_CONFIG.on ? [
     new webpack.optimize.DedupePlugin(),
