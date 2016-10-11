@@ -29,6 +29,8 @@ npm build
 ```
 
 ## History
+* 2016-10-11
+  * + add css module, please know more about css module before.
 * 2016-10-02
   * +fix bug: add `file-loader` package
   * +update: build assets file path correct, like src/img/* => dist dist/img

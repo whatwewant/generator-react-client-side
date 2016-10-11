@@ -85,13 +85,13 @@ module.exports = {
         }
       }, {
         test: /\.scss$/,
-        loader: 'style!css!postcss!sass'
+        loader: 'style!css?modules&localIdentName=[name]__[local]!postcss!sass'
       }, {
         test: /\.less$/,
-        loader: 'style!css!postcss!less'
+        loader: 'style!css?modules&localIdentName=[name]__[local]!postcss!less'
       }, {
         test: /\.css$/,
-        loader: 'style!css!postcss'
+        loader: 'style!css?modules&localIdentName=[name]__[local]!postcss'
       }, {
         test: /\.json$/,
         loader: 'json'
