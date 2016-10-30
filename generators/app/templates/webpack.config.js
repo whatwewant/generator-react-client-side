@@ -49,6 +49,7 @@ module.exports = {
     path.join(src, 'app.js')
   ],
   output: {
+    comments: false,
     path: path.resolve(__dirname, 'dist'),
     filename: './bundle.js',
     publicPath: '/'
