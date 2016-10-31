@@ -98,13 +98,13 @@ module.exports = {
         }
       }, {
         test: /\.scss$/,
-        loader: 'style!css?modules&localIdentName=[name]__[local]!postcss!sass'
+        loader: ExtractTextPlugin.extract('style-loader', "css-loader!sass-loader")
       }, {
         test: /\.less$/,
-        loader: 'style!css?modules&localIdentName=[name]__[local]!postcss!less'
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
       }, {
         test: /\.css$/,
-        loader: 'style!css?modules&localIdentName=[name]__[local]!postcss'
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
       }, {
         test: /\.json$/,
         loader: 'json'
@@ -121,9 +121,18 @@ module.exports = {
     return [ autoprefixer, precss, px2rem(PX2REM_OPTIONS) ];
   },
   plugins: process.env.NODE_ENV === 'production' ? SFTP_CONFIG.on ? [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+      }
+    }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
+      output: {
+        // remove all comments
+        comments: false
+      },
       compress: {
         warnings: false
       }
@@ -135,9 +144,18 @@ module.exports = {
     }),
     new SftpWebpackPlugin(SFTP_CONFIG.conf)
   ] : [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+      }
+    }),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
+      output: {
+        // remove all comments
+        comments: false
+      },
       compress: {
         warnings: false
       }
