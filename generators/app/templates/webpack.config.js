@@ -104,7 +104,7 @@ module.exports = {
         loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
       }, {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader")
       }, {
         test: /\.json$/,
         loader: 'json'
