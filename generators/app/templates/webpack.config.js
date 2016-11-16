@@ -54,7 +54,9 @@ module.exports = {
     publicPath: '/'
   },
   resolveLoader: {
-    root: path.join(__dirname, 'node_modules') // @TODO Doesnot work, for some packages will use local node_modules,
+    // 1 fallback: Resolve Problem: multi react lib
+    fallback: path.join(__dirname, 'node_modules') // @TODO Doesnot work, for some packages will use local node_modules,
+    // 2 root: @TODO unknown
     // modulesDirectories: [ path.join(__dirname, 'node_modules') ] // for some packages will use local node_modules,
   },
   resolve: {
@@ -63,19 +65,23 @@ module.exports = {
       // ================
       // 自定义路径名
       // ================
-      CONTAINERS: path.join(src, 'containers'),
+      // 1 Client
+      //   1.1 React
       COMPONENTS: path.join(src, 'components'),
+      CONTAINERS: path.join(src, 'containers'),
+      HOC: path.join(src, 'utils/HoC'),
+      //   1.2 Redux
       ACTIONS: path.join(src, 'actions'),
       REDUCERS: path.join(src, 'reducers'),
       STORE: path.join(src, 'store'),
-      CONFIG: path.join(src, 'conf'),
-      //
+      // 2 Server
       ROUTES: path.join(src, 'routes'),
+      VIEWS: path.join(src, 'views'),
+      // 3 Common
       SERVICES: path.join(src, 'services'),
       UTILS: path.join(src, 'utils'),
-      HOC: path.join(src, 'utils/HoC'),
       MIXIN: path.join(src, 'utils/mixins'),
-      VIEWS: path.join(src, 'views'),
+      CONFIG: path.join(src, 'conf'),
     },
   },
   module: {
@@ -88,7 +94,7 @@ module.exports = {
           plugins: [
             'transform-runtime',
             'transform-decorators-legacy'
-          ],
+          ].map(e => 'babel-plugin-'+e).map(require.resolve),
           presets: [
             'es2015',
             'react',
@@ -98,12 +104,15 @@ module.exports = {
         }
       }, {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style-loader', "css-loader!sass-loader")
+        // loader: 'style!css?modules&localIdentName=[name]__[local]!postcss!sass'
+        loader: ExtractTextPlugin.extract('style-loader', "css-loader!postcss-loader!sass-loader")
       }, {
         test: /\.less$/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+        // loader: 'style!css?modules&localIdentName=[name]__[local]!postcss!less'
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader!less-loader")
       }, {
         test: /\.css$/,
+        // loader: 'style!css?modules&localIdentName=[name]__[local]!postcss'
         loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader")
       }, {
         test: /\.json$/,
