@@ -29,6 +29,8 @@ npm build
 ```
 
 ## History
+* 2016-12-07
+  * + support typescript with `typescript` and `ts-loader` modules
 * 2016-10-11
   * + add css module, please know more about css module before.
   * + add postcss: px2rem

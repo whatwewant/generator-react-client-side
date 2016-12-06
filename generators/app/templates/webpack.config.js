@@ -60,7 +60,7 @@ module.exports = {
     // modulesDirectories: [ path.join(__dirname, 'node_modules') ] // for some packages will use local node_modules,
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.json'],
+    extensions: ['', '.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
       // ================
       // 自定义路径名
@@ -86,6 +86,10 @@ module.exports = {
   },
   module: {
     loaders: [
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader'
+      },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
