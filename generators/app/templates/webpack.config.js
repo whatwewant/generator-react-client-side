@@ -130,6 +130,10 @@ module.exports = {
       }
     ],
   },
+  ts: {
+    compiler: 'ntypescript',
+    configFileName: '.tsconfig.json',
+  },
   postcss: function () {
     return [ autoprefixer, precss, px2rem(PX2REM_OPTIONS) ];
   },

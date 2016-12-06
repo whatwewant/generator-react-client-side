@@ -95,6 +95,12 @@ module.exports = yeoman.Base.extend({
       this.templatePath('gitignore'),
       this.destinationPath('.gitignore')
     );
+
+    // 4 tsconfig.json
+    this.fs.copy(
+      this.templatePath('tsconfig.json'),
+      this.destinationPath('.tsconfig.json')
+    );
   },
 
   writing () {
@@ -174,6 +180,12 @@ module.exports = yeoman.Base.extend({
     this.fs.copy(
       this.templatePath('LICENSE'),
       this.destinationPath('LICENSE')
+    );
+
+    // 8 tsconfig.json
+    this.fs.copy(
+      this.templatePath('tsconfig.json'),
+      this.destinationPath('.tsconfig.json')
     );
   },
 
