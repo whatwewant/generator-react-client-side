@@ -108,16 +108,19 @@ module.exports = {
         }
       }, {
         test: /\.scss$/,
+        loader: 'style!css!postcss!sass'
         // loader: 'style!css?modules&localIdentName=[name]__[local]!postcss!sass'
-        loader: ExtractTextPlugin.extract('style-loader', "css-loader!postcss-loader!sass-loader")
+        // loader: ExtractTextPlugin.extract('style-loader', "css-loader!postcss-loader!sass-loader")
       }, {
         test: /\.less$/,
+        loader: 'style!css!postcss!less'
         // loader: 'style!css?modules&localIdentName=[name]__[local]!postcss!less'
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader!less-loader")
+        // loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader!less-loader")
       }, {
         test: /\.css$/,
+        loader: 'style!css!postcss'
         // loader: 'style!css?modules&localIdentName=[name]__[local]!postcss'
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader")
+        // loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader")
       }, {
         test: /\.json$/,
         loader: 'json'
