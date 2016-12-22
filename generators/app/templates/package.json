@@ -57,6 +57,7 @@
     "sftp-webpack-plugin": "^0.2.3",
     "style-loader": "^0.13.1",
     "style-merge": "^1.0.1",
+    "svg-react-loader": "^0.3.7",
     "ts-loader": "^1.3.0",
     "typescript": "^2.0.10",
     "url-loader": "^0.5.7",

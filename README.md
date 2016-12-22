@@ -29,6 +29,9 @@ npm build
 ```
 
 ## History
+* 2016-12-22
+  * + entry + output to modify output dirs/files
+  * + support svg use react-svg-loader
 * 2016-12-07
   * + support typescript with `typescript` and `ts-loader` modules
 * 2016-10-11

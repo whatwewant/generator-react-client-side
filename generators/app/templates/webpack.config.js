@@ -44,13 +44,13 @@ var PX2REM_OPTIONS = {
 };
 
 module.exports = {
-  entry: [
-    'babel-polyfill',
-    path.join(src, 'app.js')
-  ],
+  entry: {
+    'static/js/polyfill': babel-polyfill',
+    'static/js/app': path.join(src, 'app.js'),
+  },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: './bundle.js',
+    path: path.resolve(__dirname, 'build'),
+    filename: '[name].min.js',
     publicPath: '/'
   },
   resolveLoader: {
@@ -126,11 +126,15 @@ module.exports = {
         loader: 'json'
       }, {
         test: /\.(png|jpg|gif|svg)$/,
-        loader: 'url?limit=25000&name=[path][name].[ext]?[hash]'
+        // loader: 'url?limit=25000&name=[path][name].[ext]?[hash]'
+        loader: 'url?limit=25000&name=static/images/[name].[ext]?[hash]'
       }, {
-        test: /\.(eot|woff|ttf|svg)$/,
-        loader: 'url?limit=30000&name=[path][name]-[hash].[ext]'
-      }
+        test: /\.(eot|woff|ttf)$/,
+        loader: 'url?limit=30000&name=static/fonts/[name]-[hash].[ext]'
+      }, {
+        test: /\.svg$/,
+        loader: 'babel?presets[]=es2015&presets[]=react!svg-react'
+      },
     ],
   },
   ts: {
@@ -143,7 +147,8 @@ module.exports = {
   plugins: process.env.NODE_ENV === 'production' ? SFTP_CONFIG.on ? [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        TITLE: JSON.stringify(process.env.TITLE),
       }
     }),
     new webpack.optimize.DedupePlugin(),
@@ -159,14 +164,18 @@ module.exports = {
     }),
     new ExtractTextPlugin('[name].[contenthash].css'),
     new HtmlWebpackPlugin({
+      title: process.env.TITLE || 'EVN TITLE',
       template: path.join(__dirname, 'src/index.html'),
-      chunkSortMode: 'none'
+      chunkSortMode: 'none',
+      inject: 'body',
+      hash: true,
     }),
     new SftpWebpackPlugin(SFTP_CONFIG.conf)
   ] : [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        TITLE: JSON.stringify(process.env.TITLE),
       }
     }),
     new webpack.optimize.DedupePlugin(),
@@ -182,8 +191,11 @@ module.exports = {
     }),
     new ExtractTextPlugin('[name].[contenthash].css'),
     new HtmlWebpackPlugin({
+      title: process.env.TITLE || 'EVN TITLE',
       template: path.join(__dirname, 'src/index.html'),
-      chunkSortMode: 'none'
+      chunkSortMode: 'none',
+      inject: 'body',
+      hash: true,
     }),
   ] : [
     new webpack.optimize.OccurrenceOrderPlugin(),
