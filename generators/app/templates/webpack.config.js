@@ -45,7 +45,7 @@ var PX2REM_OPTIONS = {
 
 module.exports = {
   entry: {
-    'static/js/polyfill': babel-polyfill',
+    'static/js/polyfill': 'babel-polyfill',
     'static/js/app': path.join(src, 'app.js'),
   },
   output: {
@@ -203,8 +203,10 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new ExtractTextPlugin('[name].css'),
     new HtmlWebpackPlugin({
+      title: process.env.TITLE || 'EVN TITLE',
       template: path.join(__dirname, 'src/index.html'),
-      chunkSortMode: 'none'
+      chunkSortMode: 'none',
+      inject: 'body',
     }),
     new OpenBrowserPlugin({ url: `http://${ip.address()}:8080` })
   ],
